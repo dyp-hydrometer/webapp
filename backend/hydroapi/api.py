@@ -43,31 +43,23 @@ def fetch_hydrometers():
 def hydrometer(id):
     """
         Return associated hydrometer data by id,
-        Update hydrometer info or add new data row
+        Update hydrometer info
     """
     hydrometer = Hydrometer.query.get(id)
+    if hydrometer is None:
+        return jsonify(error=404), 404
+
     if request.method == 'GET':
+        if hydrometer is None:
+            return 
         return jsonify({ 'hydrometer': hydrometer.to_dict() })
     elif request.method == 'PUT':
         data = request.get_json()
 
         # if the user is updating a value such as activity or update interval
-        if "update" in data:
-            if "battery" in data:
-                hydrometer.battery = data["battery"]
-            if "color" in data:
-                hydrometer.color = data["color"]
-            if "active" in data:
-                hydrometer.active = data["active"]
-        else:
-            # this is a reading from the hydrometer
-            reading = Data(hydrometer_id = id)
-            reading.angle = data["angle"]
-            reading.temp = data["temp"]
-            reading.interval = data["interval"]
-            reading.rssi = data["rssi"]
-
-            hydrometer.battery = data["battery"]
+        hydrometer.battery = data["battery"]
+        hydrometer.color = data["color"]
+        hydrometer.active = data["active"]
 
         db.session.commit()
 
@@ -75,6 +67,28 @@ def hydrometer(id):
         hydrometer = Hydrometer.query.get(id)
         return jsonify(hydrometer.to_dict()), 201
 
+@api.route('/hydrometers/<int:id>/reading/', methods=('PUT',))
+def reading(id):
+    '''
+        Insert a new data row for a sensor reading
+    '''
+    hydrometer = Hydrometer.query.get(id)
+    if hydrometer is None:
+        return jsonify(error=404), 404
+
+    reading = Data(hydrometer_id = id)
+    reading.angle = data["angle"]
+    reading.temp = data["temp"]
+    reading.interval = data["interval"]
+    reading.rssi = data["rssi"]
+
+    hydrometer.battery = data["battery"]
+
+    db.session.commit()
+
+    # grab the new, updated row
+    hydrometer = Hydrometer.query.get(id)
+    return jsonify(hydrometer.to_dict()), 201
 
 @api.route('/profiles/', methods=('GET', 'POST'))
 def fetch_profiles():
@@ -110,26 +124,28 @@ def profile(id):
         Update a profile
     """
     profile = Profile.query.get(id)
+    if profile is None:
+        return jsonify(error=404), 404
+
     # return a profile's info by id
     if request.method == 'GET':
         return jsonify({ 'profile': profile.to_dict() })
     elif request.method == 'PUT':
-        return
-        """data = request.get_json()
+        data = request.get_json()
 
-        if data["update"]:
-            if "name" in data:
-                profile.battery = data["name"]
-            if "description" in data:
-                profile.color = data["description"]
-        else:
-            requirement = Requirement(profile_id = id)
-            requirement.req_temp = 
+        profile.name = data['name']
+        profile.description = data['description']
 
-            hydrometer.battery = user_data["data"]["battery"]
+        requirements = []
+        for r in data['requirements']:
+            requirement = Requirement(req_temp = r['req_temp'],
+                                      req_sg = r['req_gravity'],
+                                      duration = r['duration'])
+            requirements.append(requirement)
+        profile.requirements = requirements
 
         db.session.commit()
 
         # grab the new, updated row
-        hydrometer = Hydrometer.query.get(data['id'])
-        return jsonify(hydrometer.to_dict()), 201"""
+        profile = Profile.query.get(data['id'])
+        return jsonify(profile.to_dict()), 201

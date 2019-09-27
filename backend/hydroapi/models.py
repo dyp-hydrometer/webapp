@@ -57,7 +57,7 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     description = db.Column(db.Text)
-    requirements =  db.relationship('Requirements', backref='profiles', lazy=False)
+    requirements =  db.relationship('Requirement', backref='profiles', lazy=False)
 
     def to_dict(self):
         return dict(id = self.id,
