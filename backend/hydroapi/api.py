@@ -37,6 +37,8 @@ def fetch_hydrometers():
         db.session.add(hydrometer)
         db.session.commit()
 
+        print(hydrometer.to_dict())
+
         return jsonify(hydrometer.to_dict()), 201
 
 @api.route('/hydrometers/<int:id>/', methods=('GET', 'PUT'))
@@ -60,6 +62,7 @@ def hydrometer(id):
         hydrometer.battery = data["battery"]
         hydrometer.color = data["color"]
         hydrometer.active = data["active"]
+        hydrometer.profile = data["profile"]
 
         db.session.commit()
 

@@ -19,15 +19,17 @@ class Hydrometer(db.Model):
     # each hydrometer can have its interval changed individually
     interval = db.Column(db.Interval)
     data = db.relationship('Data', backref="hydrometers", lazy=False)
+    profile = db.Column(db.Integer, db.ForeignKey('profiles.id'))
 
     def to_dict(self):
         return dict(id = self.id,
-                    colorame = self.color,
+                    colorname = self.color,
                     created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
                     active = self.active,
-                    battery = self.data,
-                    interval = self.interval,
-                    data = [point.to_dict() for point in self.data]
+                    battery = self.battery,
+                    interval = str(self.interval),
+                    data = [point.to_dict() for point in self.data],
+                    profile = self.profile
         )
 
 class Data(db.Model):
@@ -47,7 +49,7 @@ class Data(db.Model):
                     hydrometer_id = self.hydrometer_id,
                     temp = self.temp,
                     angle = self.angle,
-                    interval = self.interval,
+                    interval = str(self.interval),
                     rssi = self.rssi
         )
 
@@ -80,7 +82,7 @@ class Requirement(db.Model):
                     profile_id = self.profile_id,
                     req_temp = self.req_temp,
                     req_gravity = self.req_gravity,
-                    duration = self.duration,
+                    duration = str(self.duration),
         )
 
 '''
@@ -91,7 +93,7 @@ class Settings(db.Model):
     # default dispaly unit. Enum?
     units = db.Column(db.Enum('SG', 'Plato', 'Brix'))
     # default update interval
-    default_interval = db.Column(db.SmallInteger)
+    default_interval = db.Column(db.Interval)
 
     def to_dict(self):
         return dict(notify = self.notify,
