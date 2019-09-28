@@ -14,10 +14,10 @@ Flask webapp for showing aggregate hydrometer data
 ```bash
     $ sudo -i -u postgres
 
-    $ createuser --interactive
+    $ createuser --interactive -W
     Enter name of role to add: dyp
-    Enter password: dyp
     Shall the new role be a superuser? (y/n) y
+    Password: dyp
 
     $ createdb dyp_web
 ```
