@@ -27,7 +27,7 @@ Flask webapp for showing aggregate hydrometer data
 ```bash
     cd backend
     sudo pip3 install virtualenv psycopg2
-    python -m venv venv
+    python3 -m venv venv
 ```
 
 ### Activate venv and install required python frameworks
