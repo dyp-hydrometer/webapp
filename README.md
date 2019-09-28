@@ -20,6 +20,7 @@ Flask webapp for showing aggregate hydrometer data
     Password: dyp
 
     $ createdb dyp_web
+    $ exit
 ```
 
 ### Install virtualenv and postgresql python adapter and create new venv
