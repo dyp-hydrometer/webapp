@@ -6,6 +6,7 @@ api.py
 
 from flask import Blueprint, jsonify, request
 from flask import current_app as app
+import sys
 from .models import db, Hydrometer, Data, Profile, Requirement
 
 api = Blueprint('api', __name__)
@@ -25,8 +26,8 @@ def fetch_hydrometers():
         Add a new hydrometer by color
     """
     if request.method == 'GET':
-        hydrometers = Hydrometer.query.all()
-        return jsonify({ 'hydrometers': [h.to_dict() for h in hydrometers]})
+        hydrometers = Hydrometer.query.order_by(Hydrometer.id).all()
+        return jsonify([h.to_dict() for h in hydrometers])
     elif request.method == 'POST':
         data = request.get_json()
 
@@ -36,8 +37,6 @@ def fetch_hydrometers():
 
         db.session.add(hydrometer)
         db.session.commit()
-
-        print(hydrometer.to_dict())
 
         return jsonify(hydrometer.to_dict()), 201
 
@@ -49,26 +48,32 @@ def hydrometer(id):
     """
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
-        return jsonify(error=404), 404
+        return jsonify(error="No such hydrometer"), 404
 
     if request.method == 'GET':
-        if hydrometer is None:
-            return 
-        return jsonify({ 'hydrometer': hydrometer.to_dict() })
+        # lazy load the hydrometer data
+        h_data = [x.to_dict() for x in hydrometer.data.all()]
+        return jsonify({'hydrometer': hydrometer.to_dict(), 'data': h_data })
     elif request.method == 'PUT':
         data = request.get_json()
 
         # if the user is updating a value such as activity or update interval
-        hydrometer.battery = data["battery"]
+        if "battery" in data:
+            hydrometer.battery = data["battery"]
         hydrometer.color = data["color"]
         hydrometer.active = data["active"]
         hydrometer.profile = data["profile"]
 
-        db.session.commit()
+        try:
+            db.session.add(hydrometer)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return jsonify(error="Error commiting transaction"), 404
 
         # grab the new, updated row
-        hydrometer = Hydrometer.query.get(id)
-        return jsonify(hydrometer.to_dict()), 201
+        #hydrometer = Hydrometer.query.get(id)
+        return '', 201
 
 @api.route('/hydrometers/<int:id>/reading/', methods=('PUT',))
 def reading(id):
@@ -77,21 +82,24 @@ def reading(id):
     '''
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
-        return jsonify(error=404), 404
+        return jsonify(error="No such hydrometer"), 404
+
+    data = request.get_json()
 
     reading = Data(hydrometer_id = id)
-    reading.angle = data["angle"]
+
+    reading.specific_gravity = data["specific_gravity"]
+    reading.time = data["time"]
     reading.temp = data["temp"]
-    reading.interval = data["interval"]
     reading.rssi = data["rssi"]
 
-    hydrometer.battery = data["battery"]
-
-    db.session.commit()
-
-    # grab the new, updated row
-    hydrometer = Hydrometer.query.get(id)
-    return jsonify(hydrometer.to_dict()), 201
+    try:
+        db.session.add(reading)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify(error="Error commiting transaction"), 404
+    return '', 201
 
 @api.route('/profiles/', methods=('GET', 'POST'))
 def fetch_profiles():
@@ -116,9 +124,13 @@ def fetch_profiles():
             requirements.append(requirement)
         profile.requirements = requirements
 
-        db.session.add(profile)
-        db.session.commit()
-        return jsonify(profile.to_dict()), 201
+        try:
+            db.session.add(profile)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return jsonify(error="Error commiting transaction"), 404
+        return '', 201
 
 @api.route('/profiles/<int:id>/', methods=('GET', 'PUT'))
 def profile(id):
@@ -147,8 +159,11 @@ def profile(id):
             requirements.append(requirement)
         profile.requirements = requirements
 
-        db.session.commit()
+        try:
+            db.session.add(profile)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return jsonify(error="Error commiting transaction"), 404
 
-        # grab the new, updated row
-        profile = Profile.query.get(data['id'])
-        return jsonify(profile.to_dict()), 201
+        return '', 201

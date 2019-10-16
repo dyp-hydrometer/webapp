@@ -18,18 +18,17 @@ class Hydrometer(db.Model):
     battery = db.Column(db.Float)
     # each hydrometer can have its interval changed individually
     interval = db.Column(db.Interval)
-    data = db.relationship('Data', backref="hydrometers", lazy=False)
+    data = db.relationship('Data', backref="hydrometers", lazy='dynamic')
     profile = db.Column(db.Integer, db.ForeignKey('profiles.id'))
 
     def to_dict(self):
         return dict(id = self.id,
-                    colorname = self.color,
+                    color = self.color,
                     created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
                     active = self.active,
                     battery = self.battery,
                     interval = str(self.interval),
-                    data = [point.to_dict() for point in self.data],
-                    profile = self.profile
+                    profile = self.profile,
         )
 
 class Data(db.Model):
@@ -38,9 +37,9 @@ class Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hydrometer_id = db.Column(db.Integer, db.ForeignKey("hydrometers.id"))
     temp = db.Column(db.Float)
-    angle = db.Column(db.Float)
+    specific_gravity = db.Column(db.Float)
     # store here as well in case the user changes the value during use
-    interval = db.Column(db.Interval)
+    time = db.Column(db.DateTime, default=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
     # signal strength
     rssi = db.Column(db.SmallInteger)
 
@@ -48,8 +47,8 @@ class Data(db.Model):
         return dict(id = self.id,
                     hydrometer_id = self.hydrometer_id,
                     temp = self.temp,
-                    angle = self.angle,
-                    interval = str(self.interval),
+                    specific_gravity = self.specific_gravity,
+                    time = str(self.time),
                     rssi = self.rssi
         )
 
@@ -84,20 +83,3 @@ class Requirement(db.Model):
                     req_gravity = self.req_gravity,
                     duration = str(self.duration),
         )
-
-'''
-class Settings(db.Model):
-    __tablename__ = 'settings'
-
-    notify = db.Column(db.Boolean)
-    # default dispaly unit. Enum?
-    units = db.Column(db.Enum('SG', 'Plato', 'Brix'))
-    # default update interval
-    default_interval = db.Column(db.Interval)
-
-    def to_dict(self):
-        return dict(notify = self.notify,
-                    units = self.units,
-                    default_interval = self.default_interval
-        )
-'''
