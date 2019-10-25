@@ -50,11 +50,11 @@ export default {
     }),
     methods: {
         getHydrometer(id) {
-            const path = `http://localhost:5000/api/hydrometers/${id}`;
+            const path = `http://${process.env.VUE_APP_API_URL}/hydrometers/${id}`;
             axios.get(path)
                 .then((res) => {
                     this.data = res.data["data"];
-                    this.hydrometer = res.data["hydrometer"]
+                    this.hydrometer = res.data["hydrometer"];
                     this.parseData();
                 })
                 .catch((error) => {
