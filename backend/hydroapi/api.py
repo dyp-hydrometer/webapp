@@ -11,14 +11,6 @@ from .models import db, Hydrometer, Data, Profile, Requirement
 
 api = Blueprint('api', __name__)
 
-@api.route('/hello/<string:name>/')
-def say_hello(name):
-    """
-    Dummy test
-    """
-    response = { 'msg': "Hello, {}.".format(name.capitalize()) }
-    return jsonify(response)
-
 @api.route('/hydrometers/', methods=('GET', 'POST'))
 def fetch_hydrometers():
     """
@@ -52,8 +44,8 @@ def hydrometer(id):
 
     if request.method == 'GET':
         # lazy load the hydrometer data
-        h_data = [x.to_dict() for x in hydrometer.data.all()]
-        return jsonify({'hydrometer': hydrometer.to_dict(), 'data': h_data })
+        #h_data = [x.to_dict() for x in hydrometer.data.all()]
+        return jsonify(hydrometer.to_dict())
     elif request.method == 'PUT':
         data = request.get_json()
 
@@ -74,6 +66,33 @@ def hydrometer(id):
         # grab the new, updated row
         #hydrometer = Hydrometer.query.get(id)
         return '', 201
+
+@api.route('/hydrometers/<int:id>/data')
+def hydrometer_data(id):
+    """
+        Return associated hydrometer data by id,
+        Update hydrometer info
+    """
+    hydrometer = Hydrometer.query.get(id)
+    if hydrometer is None:
+        return jsonify(error="No such hydrometer"), 404
+
+    # lazy load the hydrometer data
+    return jsonify([x.to_dict() for x in hydrometer.data.all()])
+
+@api.route('/hydrometers/<int:id>/data/last')
+def hydrometer_last(id):
+    """
+        Return associated hydrometer data by id,
+        Update hydrometer info
+    """
+    hydrometer = Hydrometer.query.get(id)
+    if hydrometer is None:
+        return jsonify(error="No such hydrometer"), 404
+
+    # lazy load the hydrometer data
+    h_data = [x.to_dict() for x in hydrometer.data.order_by(Data.id.desc()).limit(1)]
+    return jsonify(h_data)
 
 @api.route('/hydrometers/<int:id>/reading/', methods=('PUT',))
 def reading(id):
