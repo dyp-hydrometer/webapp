@@ -44,8 +44,8 @@ def hydrometer(id):
 
     if request.method == 'GET':
         # lazy load the hydrometer data
-        #h_data = [x.to_dict() for x in hydrometer.data.all()]
-        return jsonify(hydrometer.to_dict())
+        h_data = [x.to_dict() for x in hydrometer.data.all()]
+        return jsonify({'hydrometer': hydrometer.to_dict(), 'data': h_data })
     elif request.method == 'PUT':
         data = request.get_json()
 
@@ -67,11 +67,22 @@ def hydrometer(id):
         #hydrometer = Hydrometer.query.get(id)
         return '', 201
 
+@api.route('/hydrometers/<int:id>/info')
+def hydrometer_info(id):
+    """
+        Return associated hydrometer info by id,
+    """
+    hydrometer = Hydrometer.query.get(id)
+    if hydrometer is None:
+        return jsonify(error="No such hydrometer"), 404
+
+    # lazy load the hydrometer data
+    return jsonify(hydrometer.to_dict())
+
 @api.route('/hydrometers/<int:id>/data')
 def hydrometer_data(id):
     """
         Return associated hydrometer data by id,
-        Update hydrometer info
     """
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
@@ -83,15 +94,14 @@ def hydrometer_data(id):
 @api.route('/hydrometers/<int:id>/data/last')
 def hydrometer_last(id):
     """
-        Return associated hydrometer data by id,
-        Update hydrometer info
+        Return the last data entry from the hydrometer
     """
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
         return jsonify(error="No such hydrometer"), 404
 
     # lazy load the hydrometer data
-    h_data = [x.to_dict() for x in hydrometer.data.order_by(Data.id.desc()).limit(1)]
+    h_data = hydrometer.data.order_by(Data.id.desc()).limit(1)[0]
     return jsonify(h_data)
 
 @api.route('/hydrometers/<int:id>/reading/', methods=('PUT',))
