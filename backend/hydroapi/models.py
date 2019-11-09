@@ -5,6 +5,7 @@ models.py
 
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects import postgresql
 
 db = SQLAlchemy()
 
@@ -12,6 +13,7 @@ class Hydrometer(db.Model):
     __tablename__ = 'hydrometers'
 
     id = db.Column(db.Integer, primary_key=True)
+    mac_addr = db.Column(postgresql.MACADDR, unique=True)
     color = db.Column(db.String(7))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     active = db.Column(db.Boolean, default=True)
@@ -23,6 +25,7 @@ class Hydrometer(db.Model):
 
     def to_dict(self):
         return dict(id = self.id,
+                    mac_addr = self.mac_addr,
                     color = self.color,
                     created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
                     active = self.active,
@@ -58,27 +61,14 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     description = db.Column(db.Text)
-    requirements =  db.relationship('Requirement', backref='profiles', lazy=False)
-
-    def to_dict(self):
-        return dict(id = self.id,
-                    name = self.name,
-                    description = self.description,
-                    requirements = [requirement.to_dict() for requirement in self.requirements]
-        )
-
-class Requirement(db.Model):
-    __tablename__ = 'requirements'
-
-    id = db.Column(db.Integer, primary_key=True)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.id"))
     req_temp = db.Column(db.Float)
     req_gravity = db.Column(db.Float)
     duration = db.Column(db.Interval)
 
     def to_dict(self):
         return dict(id = self.id,
-                    profile_id = self.profile_id,
+                    name = self.name,
+                    description = self.description,
                     req_temp = self.req_temp,
                     req_gravity = self.req_gravity,
                     duration = str(self.duration),

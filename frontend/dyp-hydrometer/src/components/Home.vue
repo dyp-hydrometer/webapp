@@ -1,4 +1,5 @@
 <template>
+<v-row justify="center">
   <v-data-iterator
     :items="items"
     :items-per-page.sync="itemsPerPage"
@@ -47,29 +48,58 @@
             <v-btn
               :to="`hydrometers/${hydrometer.id}`"
               class="ma-2"
-              href=""
-              :loading="loading"
-              :disabled="loading"
               color="secondary"
-              @click="loader = 'loading'"
             >
-              View Data
+              View
             </v-btn>
             <v-btn
               class="ma-2"
-              :loading="loading"
-              :disabled="loading"
               outlined 
               color="success"
-              @click="loader = 'loading'"
+              @click.stop="$set(editForm, hydrometer.id, true)"
             >
               <v-icon left>mdi-pencil</v-icon> Edit
             </v-btn>
           </v-card>
+
+          <v-dialog v-model="editForm[hydrometer.id]" persistent max-width="600px" :key="hydrometer.id">
+            <!-- <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+            </template> -->
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ hydrometer.id }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field label="Color" :value="hydrometer.color" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field label="Interval" :value="hydrometer.interval" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-select :items="profiles" label="Profiles"></v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-switch v-model="active" :active="hydrometer.active" class="ma-2" label="Active"></v-switch>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click.stop="$set(editForm, hydrometer.id, false)">Close</v-btn>
+                <v-btn color="blue darken-1" text @click="editHydrometer(hydrometer)">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
       </v-row>
     </template>
   </v-data-iterator>
+</v-row>
 </template>
 
 <script>
@@ -80,14 +110,10 @@ export default {
       itemsPerPageOptions: [4, 8, 12],
       itemsPerPage: 4,
       items: [],
+      profiles: [],
       message: '',
       showMessage: false,
-      editForm: {
-        id: '',
-        color: '',
-        active: '',
-        profile: '',
-      },
+      editForm: {},
   }),
   methods: {
     getHydrometers() {
@@ -103,20 +129,29 @@ export default {
           console.error(error);
         });
     },
-    editHydrometer(Hydrometer) {
-      this.editForm = Hydrometer;
+    getProfiles() {
+      const path = `http://${process.env.VUE_APP_API_URL}/profiles/`;
+      // eslint-disable-next-line
+      console.error(process.env.VUE_APP_API_URL);
+      axios.get(path)
+        .then((res) => {
+          res.data.map((profile)=>{
+            this.profiles.push({text: profile.name, value: profile.id});
+          });
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
     },
-    onSubmitUpdate(evt) {
-      evt.preventDefault();
-      this.$refs.editHydrometerModal.hide();
-      let active = true;
-      if (!this.editForm.active[0]) active = false;
+    editHydrometer(Hydrometer) {
       const payload = {
-        color: this.editForm.color,
-        profile: this.editForm.profile,
-        active,
+        color: Hydrometer.color,
+        interval: Hydrometer.interval,
+        profile: Hydrometer.profile,
+        active: Hydrometer.active,
       };
-      this.updateHydrometer(payload, this.editForm.id);
+      this.updateHydrometer(payload, Hydrometer.id);
     },
     updateHydrometer(payload, HydrometerID) {
       //
@@ -134,15 +169,10 @@ export default {
           this.getHydrometers();
         });
     },
-    onResetUpdate(evt) {
-      evt.preventDefault();
-      this.$refs.editHydrometerModal.hide();
-      this.initForm();
-      this.getHydrometers();
-    },
   },
   created() {
     this.getHydrometers();
+    this.getProfiles();
   },
 };
 </script>

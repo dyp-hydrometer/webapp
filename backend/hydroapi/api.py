@@ -7,7 +7,7 @@ api.py
 from flask import Blueprint, jsonify, request
 from flask import current_app as app
 import sys
-from .models import db, Hydrometer, Data, Profile, Requirement
+from .models import db, Hydrometer, Data, Profile
 
 api = Blueprint('api', __name__)
 
@@ -55,6 +55,7 @@ def hydrometer(id):
         hydrometer.color = data["color"]
         hydrometer.active = data["active"]
         hydrometer.profile = data["profile"]
+        hydrometer.interval = data["interval"]
 
         try:
             db.session.add(hydrometer)
@@ -79,17 +80,25 @@ def hydrometer_info(id):
     # lazy load the hydrometer data
     return jsonify(hydrometer.to_dict())
 
-@api.route('/hydrometers/<int:id>/data')
-def hydrometer_data(id):
+@api.route('/hydrometers/<int:id>/<string:key>')
+def hydrometer_key(id, key):
     """
-        Return associated hydrometer data by id,
+        Return the specified hydrometer's battery status
     """
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
         return jsonify(error="No such hydrometer"), 404
-
-    # lazy load the hydrometer data
-    return jsonify([x.to_dict() for x in hydrometer.data.all()])
+    
+    data = None
+    try:
+        if key == "data":
+            data = [x.to_dict() for x in hydrometer.data.all()]
+        else:
+            data = hydrometer.to_dict()[key]
+    except:
+        return jsonify(error="No such key in hydrometer"), 404
+    finally:
+        return jsonify(data)
 
 @api.route('/hydrometers/<int:id>/data/last')
 def hydrometer_last(id):
@@ -102,7 +111,7 @@ def hydrometer_last(id):
 
     # lazy load the hydrometer data
     h_data = hydrometer.data.order_by(Data.id.desc()).limit(1)[0]
-    return jsonify(h_data)
+    return jsonify(h_data.to_dict())
 
 @api.route('/hydrometers/<int:id>/reading/', methods=('PUT',))
 def reading(id):
@@ -138,20 +147,15 @@ def fetch_profiles():
     """
     if request.method == 'GET':
         profiles = Profile.query.all()
-        return jsonify({ 'profiles': [p.to_dict() for p in profiles]})
+        return jsonify([p.to_dict() for p in profiles])
     elif request.method == 'POST':
         data = request.get_json()
 
         profile = Profile(name=data['name'])
         profile.description = data['description']
-
-        requirements = []
-        for r in data['requirements']:
-            requirement = Requirement(req_temp = r['req_temp'],
-                                      req_sg = r['req_gravity'],
-                                      duration = r['duration'])
-            requirements.append(requirement)
-        profile.requirements = requirements
+        profile.req_temp = data['req_temp']
+        profile.req_gravity = data['req_gravity']
+        profile.duration = data['duration']
 
         try:
             db.session.add(profile)
@@ -179,14 +183,9 @@ def profile(id):
 
         profile.name = data['name']
         profile.description = data['description']
-
-        requirements = []
-        for r in data['requirements']:
-            requirement = Requirement(req_temp = r['req_temp'],
-                                      req_sg = r['req_gravity'],
-                                      duration = r['duration'])
-            requirements.append(requirement)
-        profile.requirements = requirements
+        profile.req_temp = r['req_temp']
+        profile.req_gravity = r['req_gravity']
+        profile.duration = r['duration']
 
         try:
             db.session.add(profile)
