@@ -25,6 +25,7 @@ def fetch_hydrometers():
 
         hydrometer = Hydrometer(color=data['color'])
         hydrometer.battery = data['battery']
+        hydrometer.mac_addr = data["mac_addr"]
         hydrometer.interval = app.config['INTERVAL_DEFAULT']
 
         db.session.add(hydrometer)
@@ -66,7 +67,17 @@ def hydrometer(id):
 
         # grab the new, updated row
         #hydrometer = Hydrometer.query.get(id)
-        return '', 201
+        return '', 200
+
+@api.route('/hydrometers/<mac_addr>/')
+def hydrometer_mac(mac_addr):
+    """
+        Return associated hydrometer data by mac address, used by the bluetooth connection manager
+    """
+    hydrometer = Hydrometer.query.filter(Hydrometer.mac_addr == mac_addr).first()
+    if hydrometer is None:
+        return jsonify(error="No such hydrometer"), 404
+    return jsonify(hydrometer.to_dict())
 
 @api.route('/hydrometers/<int:id>/info')
 def hydrometer_info(id):
@@ -129,7 +140,7 @@ def reading(id):
     reading.specific_gravity = data["specific_gravity"]
     reading.time = data["time"]
     reading.temp = data["temp"]
-    reading.rssi = data["rssi"]
+    #reading.rssi = data["rssi"]
 
     try:
         db.session.add(reading)

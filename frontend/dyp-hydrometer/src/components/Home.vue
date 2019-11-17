@@ -41,7 +41,7 @@
               </v-list-item>
               <v-list-item>
                 <v-list-item-content>Profile:</v-list-item-content>
-                <v-list-item-content class="align-end">{{ hydrometer.profile }}</v-list-item-content>
+                <v-list-item-content class="align-end">{{ profiles[hydrometer.profile-1].text }}</v-list-item-content>
               </v-list-item>
             </v-list>
             <v-divider></v-divider>
@@ -56,7 +56,7 @@
               class="ma-2"
               outlined 
               color="success"
-              @click.stop="$set(editForm, hydrometer.id, true)"
+              @click.stop="$set(editForm, hydrometer.id, true);"
             >
               <v-icon left>mdi-pencil</v-icon> Edit
             </v-btn>
@@ -74,24 +74,24 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field label="Color" :value="hydrometer.color" required></v-text-field>
+                      <v-text-field label="Color" v-model="items[hydrometer.id-1].color" :value="hydrometer.color" required></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field label="Interval" :value="hydrometer.interval" required></v-text-field>
+                      <v-text-field label="Interval" :value="hydrometer.interval"  v-model="items[hydrometer.id-1].interval" required></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-select :items="profiles" label="Profiles"></v-select>
+                      <v-select :items="profiles" label="Profiles" v-model="items[hydrometer.id-1].profile" :value="hydrometer.profile"></v-select>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-switch v-model="active" :active="hydrometer.active" class="ma-2" label="Active"></v-switch>
+                    <v-switch :active="hydrometer.active" v-model="items[hydrometer.id-1].active" class="ma-2" label="Active"></v-switch>
                   </v-row>
                 </v-container>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click.stop="$set(editForm, hydrometer.id, false)">Close</v-btn>
-                <v-btn color="blue darken-1" text @click="editHydrometer(hydrometer)">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="editHydrometer(hydrometer.id)">Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -118,11 +118,11 @@ export default {
   methods: {
     getHydrometers() {
       const path = `http://${process.env.VUE_APP_API_URL}/hydrometers/`;
-      // eslint-disable-next-line
-      console.error(process.env.VUE_APP_API_URL);
       axios.get(path)
         .then((res) => {
           this.items = res.data;
+          // eslint-disable-next-line
+          console.log(this.items);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -131,8 +131,6 @@ export default {
     },
     getProfiles() {
       const path = `http://${process.env.VUE_APP_API_URL}/profiles/`;
-      // eslint-disable-next-line
-      console.error(process.env.VUE_APP_API_URL);
       axios.get(path)
         .then((res) => {
           res.data.map((profile)=>{
@@ -144,19 +142,22 @@ export default {
           console.error(error);
         });
     },
-    editHydrometer(Hydrometer) {
+    editHydrometer(id) {
       const payload = {
-        color: Hydrometer.color,
-        interval: Hydrometer.interval,
-        profile: Hydrometer.profile,
-        active: Hydrometer.active,
+        color: this.items[id-1].color,
+        interval: this.items[id-1].interval,
+        profile: this.items[id-1].profile,
+        active: this.items[id-1].active,
       };
-      this.updateHydrometer(payload, Hydrometer.id);
+      // eslint-disable-next-line
+      console.log(payload);
+      this.updateHydrometer(payload, id);
+      this.editForm[id] = false;
     },
     updateHydrometer(payload, HydrometerID) {
       //
       //const path = `http://localhost:5000/api/hydrometers/${HydrometerID}`;
-      const path = `http://${process.env.VUE_APP_API_URL}/hydrometers/${HydrometerID}`;
+      const path = `http://${process.env.VUE_APP_API_URL}/hydrometers/${HydrometerID}/`;
       axios.put(path, payload)
         .then(() => {
           this.getHydrometers();

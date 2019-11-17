@@ -44,7 +44,7 @@ class Data(db.Model):
     # store here as well in case the user changes the value during use
     time = db.Column(db.DateTime, default=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
     # signal strength
-    rssi = db.Column(db.SmallInteger)
+    #rssi = db.Column(db.SmallInteger)
 
     def to_dict(self):
         return dict(id = self.id,
@@ -52,7 +52,7 @@ class Data(db.Model):
                     temp = self.temp,
                     specific_gravity = self.specific_gravity,
                     time = str(self.time),
-                    rssi = self.rssi
+                    #rssi = self.rssi
         )
 
 class Profile(db.Model):
