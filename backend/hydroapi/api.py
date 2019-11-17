@@ -99,9 +99,10 @@ def hydrometer_key(id, key):
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
         return jsonify(error="No such hydrometer"), 404
-    
+
     data = None
     try:
+        # data is a special case since it is lazy loaded
         if key == "data":
             data = [x.to_dict() for x in hydrometer.data.all()]
         else:
@@ -188,7 +189,7 @@ def profile(id):
 
     # return a profile's info by id
     if request.method == 'GET':
-        return jsonify({ 'profile': profile.to_dict() })
+        return jsonify(profile.to_dict())
     elif request.method == 'PUT':
         data = request.get_json()
 
