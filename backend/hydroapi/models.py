@@ -16,6 +16,7 @@ class Hydrometer(db.Model):
     mac_addr = db.Column(postgresql.MACADDR, unique=True)
     color = db.Column(db.String(7))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    brew_start = db.Column(db.DateTime, default=datetime.utcnow)
     active = db.Column(db.Boolean, default=True)
     battery = db.Column(db.Float)
     # each hydrometer can have its interval changed individually
@@ -28,6 +29,7 @@ class Hydrometer(db.Model):
                     mac_addr = self.mac_addr,
                     color = self.color,
                     created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    brew_start = self.brew_start.strftime('%Y-%m-%d %H:%M:%S'),
                     active = self.active,
                     battery = self.battery,
                     interval = str(self.interval),
@@ -44,7 +46,6 @@ class Data(db.Model):
     # store here as well in case the user changes the value during use
     time = db.Column(db.DateTime, default=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
     # signal strength
-    #rssi = db.Column(db.SmallInteger)
 
     def to_dict(self):
         return dict(id = self.id,
@@ -52,7 +53,6 @@ class Data(db.Model):
                     temp = self.temp,
                     specific_gravity = self.specific_gravity,
                     time = str(self.time),
-                    #rssi = self.rssi
         )
 
 class Profile(db.Model):

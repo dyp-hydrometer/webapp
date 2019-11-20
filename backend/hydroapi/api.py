@@ -45,7 +45,7 @@ def hydrometer(id):
 
     if request.method == 'GET':
         # lazy load the hydrometer data
-        h_data = [x.to_dict() for x in hydrometer.data.all()]
+        h_data = [x.to_dict() for x in hydrometer.data.filter(Hydrometer.brew_start >= hydrometer.brew_start).all()]
         return jsonify({'hydrometer': hydrometer.to_dict(), 'data': h_data })
     elif request.method == 'PUT':
         data = request.get_json()
@@ -91,26 +91,43 @@ def hydrometer_info(id):
     # lazy load the hydrometer data
     return jsonify(hydrometer.to_dict())
 
-@api.route('/hydrometers/<int:id>/<string:key>')
+@api.route('/hydrometers/<int:id>/<string:key>',methods=('GET', 'PUT'))
 def hydrometer_key(id, key):
     """
-        Return the specified hydrometer's battery status
+        Return the specified hydrometer value by key
     """
     hydrometer = Hydrometer.query.get(id)
     if hydrometer is None:
         return jsonify(error="No such hydrometer"), 404
 
-    data = None
-    try:
-        # data is a special case since it is lazy loaded
-        if key == "data":
-            data = [x.to_dict() for x in hydrometer.data.all()]
-        else:
-            data = hydrometer.to_dict()[key]
-    except:
-        return jsonify(error="No such key in hydrometer"), 404
-    finally:
-        return jsonify(data)
+    if request.method == 'GET':
+        return_data = None
+        try:
+            # data is a special case since it is lazy loaded
+            if key == "data":
+                return_data = [x.to_dict() for x in hydrometer.data.filter(Hydrometer.brew_start >= hydrometer.brew_start).all()]
+            else:
+                return_data = hydrometer.to_dict()[key]
+        except:
+            return jsonify(error="No such key in hydrometer"), 404
+        finally:
+            return jsonify(return_data)
+    elif request.method == 'PUT':
+        data = request.get_json()
+
+        if k == "color":
+            hydrometer.color = v
+        elif k == "brew_start":
+            hydrometer.brew_start = v
+        elif k == "active":
+            hydrometer.active = v
+        elif k == "battery":
+            hydrometer.battery
+        elif k == "interval":
+            hydrometer.interval = v
+        elif k == "profile":
+            hydrometer.profile = v
+
 
 @api.route('/hydrometers/<int:id>/data/last')
 def hydrometer_last(id):
@@ -122,7 +139,7 @@ def hydrometer_last(id):
         return jsonify(error="No such hydrometer"), 404
 
     # lazy load the hydrometer data
-    h_data = hydrometer.data.order_by(Data.id.desc()).limit(1)[0]
+    h_data = hydrometer.data.filter(Hydrometer.brew_start >= hydrometer.brew_start).order_by(Data.id.desc()).limit(1)[0]
     return jsonify(h_data.to_dict())
 
 @api.route('/hydrometers/<int:id>/reading/', methods=('PUT',))
@@ -141,7 +158,6 @@ def reading(id):
     reading.specific_gravity = data["specific_gravity"]
     reading.time = data["time"]
     reading.temp = data["temp"]
-    #reading.rssi = data["rssi"]
 
     try:
         db.session.add(reading)
