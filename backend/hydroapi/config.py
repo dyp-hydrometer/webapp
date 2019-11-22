@@ -5,7 +5,7 @@ config.py
 
 class BaseConfig(object):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://evan:dyp@localhost/dyp_web'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://evan:dyp@localhost/dyp_final'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # used for encryption and session management
     SECRET_KEY = 'dyphydrometer'

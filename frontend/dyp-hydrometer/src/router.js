@@ -21,9 +21,9 @@ export default new Router({
       component: Hydrometer,
     },
     {
-        path: '/profiles/:id',
-        name: 'Profile',
-        component: Profile,
-      },
+      path: '/profiles/',
+      name: 'Profiles',
+      component: Profile,
+    }
   ],
 });

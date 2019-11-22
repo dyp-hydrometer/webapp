@@ -22,7 +22,7 @@ class Hydrometer(db.Model):
     # each hydrometer can have its interval changed individually
     interval = db.Column(db.Interval)
     data = db.relationship('Data', backref="hydrometers", lazy='dynamic')
-    profile = db.Column(db.Integer, db.ForeignKey('profiles.id'))
+    profile = db.Column(db.Integer, db.ForeignKey('profiles.id'), default= 0)
 
     def to_dict(self):
         return dict(id = self.id,

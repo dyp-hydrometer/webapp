@@ -19,7 +19,7 @@ for x in range(0,6):
         temp = float("{0:.3f}".format(fake.pyfloat(min_value=1, max_value=2)))
     profile["req_gravity"] = temp
     profile["duration"] = str(datetime.timedelta(days=14))
-    resp = requests.post(f"http://localhost:5000/api/profiles/", data=json.dumps(profile), headers=headers)
+    resp = requests.post(f"http://192.168.1.6:5000/api/profiles/", data=json.dumps(profile), headers=headers)
     #resp = requests.get('http://localhost:5000/api/hydrometers/'+x, headers=headers)
     #if resp.status_code == 201:
     '''for y in range(0, 20):
