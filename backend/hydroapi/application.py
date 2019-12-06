@@ -1,6 +1,9 @@
 """
-application.py
-- creates a Flask app instance and registers the database object
+.. module:: application
+    :platform: Linux
+    :synopsis: creates a Flask app instance and registers the database object
+
+.. moduleauthor:: Evan Campbell
 """
 
 from flask import Flask

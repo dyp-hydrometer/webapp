@@ -1,7 +1,9 @@
 """
-api.py
-- provides the API endpoints for consuming and producing
-  REST requests and responses
+.. module:: api
+    :platform: Linux
+    :synopsis: provides the API endpoints for consuming and producing REST requests and responses
+
+.. moduleauthor:: Evan Campbell
 """
 
 from flask import Blueprint, jsonify, request
@@ -211,7 +213,7 @@ def reading(id):
     except:
         db.session.rollback()
         return jsonify(error="Error commiting transaction"), 404
-    return jsonify(reading=reading), 201
+    #return jsonify(reading=reading), 201
 
 @api.route('/profiles/', methods=('GET', 'POST'))
 def fetch_profiles():

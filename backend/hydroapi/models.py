@@ -1,6 +1,9 @@
 """
-models.py
-- Data classes for the hydroapi application
+.. module:: models
+    :platform: Linux
+    :synopsis: Data classes for the hydroapi application
+
+.. moduleauthor:: Evan Campbell
 """
 
 from datetime import datetime

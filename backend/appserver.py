@@ -1,6 +1,9 @@
 """
-appserver.py
-- creates an application instance and runs the dev server
+.. module:: appserver
+    :platform: Linux
+    :synopsis: creates an application instance and runs the dev server
+
+.. moduleauthor:: Evan Campbell
 """
 
 if __name__ == '__main__':

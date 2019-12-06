@@ -1,6 +1,9 @@
 """
-config.py
-- settings for the flask application object
+.. module:: config
+    :platform: Linux
+    :synopsis: settings for the flask application object
+
+.. moduleauthor:: Evan Campbell
 """
 
 class BaseConfig(object):

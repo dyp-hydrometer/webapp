@@ -1,7 +1,10 @@
 """
-manage.py
-- provides a command line utility for interacting with the
+.. module:: manage
+    :platform: Linux
+    :synopsis: provides a command line utility for interacting with the
   application to perform interactive debugging and setup
+
+.. moduleauthor:: Evan Campbell
 """
 
 from flask_script import Manager
