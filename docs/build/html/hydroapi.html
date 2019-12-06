@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>hydroapi package &#8212; Dyp Web 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="hydroapi-package">
+<h1>hydroapi package<a class="headerlink" href="#hydroapi-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hydroapi.api">
+<span id="hydroapi-api-module"></span><h2>hydroapi.api module<a class="headerlink" href="#module-hydroapi.api" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-api"></span><dl class="function">
+<dt id="hydroapi.api.fetch_hydrometers">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">fetch_hydrometers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.fetch_hydrometers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all saved hydrometers,
+Add a new hydrometer by color</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.fetch_profiles">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">fetch_profiles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.fetch_profiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all saved profiles,
+Add a new profile by name</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.hydrometer">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">hydrometer</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.hydrometer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return associated hydrometer data by id,
+Update hydrometer info</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.hydrometer_info">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">hydrometer_info</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.hydrometer_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return associated hydrometer info by id,</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.hydrometer_key">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">hydrometer_key</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">key</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.hydrometer_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the specified hydrometer value by key</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.hydrometer_last">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">hydrometer_last</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.hydrometer_last" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the last data entry from the hydrometer</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.hydrometer_mac">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">hydrometer_mac</code><span class="sig-paren">(</span><em class="sig-param">mac_addr</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.hydrometer_mac" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return associated hydrometer data by mac address, used by the bluetooth connection manager</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.profile">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">profile</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of a profile’s information by id,
+Update a profile</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hydroapi.api.reading">
+<code class="sig-prename descclassname">hydroapi.api.</code><code class="sig-name descname">reading</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.api.reading" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a new data row for a sensor reading</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroapi.application">
+<span id="hydroapi-application-module"></span><h2>hydroapi.application module<a class="headerlink" href="#module-hydroapi.application" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-application"></span><dl class="function">
+<dt id="hydroapi.application.create_app">
+<code class="sig-prename descclassname">hydroapi.application.</code><code class="sig-name descname">create_app</code><span class="sig-paren">(</span><em class="sig-param">app_name='HYDRO_API'</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.application.create_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hydroapi.config">
+<span id="hydroapi-config-module"></span><h2>hydroapi.config module<a class="headerlink" href="#module-hydroapi.config" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-config"></span><dl class="class">
+<dt id="hydroapi.config.BaseConfig">
+<em class="property">class </em><code class="sig-prename descclassname">hydroapi.config.</code><code class="sig-name descname">BaseConfig</code><a class="headerlink" href="#hydroapi.config.BaseConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="hydroapi.config.BaseConfig.DEBUG">
+<code class="sig-name descname">DEBUG</code><em class="property"> = True</em><a class="headerlink" href="#hydroapi.config.BaseConfig.DEBUG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.config.BaseConfig.INTERVAL_DEFAULT">
+<code class="sig-name descname">INTERVAL_DEFAULT</code><em class="property"> = '5 seconds'</em><a class="headerlink" href="#hydroapi.config.BaseConfig.INTERVAL_DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.config.BaseConfig.SECRET_KEY">
+<code class="sig-name descname">SECRET_KEY</code><em class="property"> = 'dyphydrometer'</em><a class="headerlink" href="#hydroapi.config.BaseConfig.SECRET_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.config.BaseConfig.SQLALCHEMY_DATABASE_URI">
+<code class="sig-name descname">SQLALCHEMY_DATABASE_URI</code><em class="property"> = 'postgresql://evan:dyp&#64;localhost/dyp_final'</em><a class="headerlink" href="#hydroapi.config.BaseConfig.SQLALCHEMY_DATABASE_URI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.config.BaseConfig.SQLALCHEMY_TRACK_MODIFICATIONS">
+<code class="sig-name descname">SQLALCHEMY_TRACK_MODIFICATIONS</code><em class="property"> = False</em><a class="headerlink" href="#hydroapi.config.BaseConfig.SQLALCHEMY_TRACK_MODIFICATIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroapi.models">
+<span id="hydroapi-models-module"></span><h2>hydroapi.models module<a class="headerlink" href="#module-hydroapi.models" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-models"></span><dl class="class">
+<dt id="hydroapi.models.Data">
+<em class="property">class </em><code class="sig-prename descclassname">hydroapi.models.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.models.Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<dl class="attribute">
+<dt id="hydroapi.models.Data.hydrometer_id">
+<code class="sig-name descname">hydrometer_id</code><a class="headerlink" href="#hydroapi.models.Data.hydrometer_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Data.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#hydroapi.models.Data.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Data.specific_gravity">
+<code class="sig-name descname">specific_gravity</code><a class="headerlink" href="#hydroapi.models.Data.specific_gravity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Data.temp">
+<code class="sig-name descname">temp</code><a class="headerlink" href="#hydroapi.models.Data.temp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Data.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#hydroapi.models.Data.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroapi.models.Data.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.models.Data.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hydroapi.models.Hydrometer">
+<em class="property">class </em><code class="sig-prename descclassname">hydroapi.models.</code><code class="sig-name descname">Hydrometer</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.models.Hydrometer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.active">
+<code class="sig-name descname">active</code><a class="headerlink" href="#hydroapi.models.Hydrometer.active" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.battery">
+<code class="sig-name descname">battery</code><a class="headerlink" href="#hydroapi.models.Hydrometer.battery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.brew_start">
+<code class="sig-name descname">brew_start</code><a class="headerlink" href="#hydroapi.models.Hydrometer.brew_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.color">
+<code class="sig-name descname">color</code><a class="headerlink" href="#hydroapi.models.Hydrometer.color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.created_at">
+<code class="sig-name descname">created_at</code><a class="headerlink" href="#hydroapi.models.Hydrometer.created_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.data">
+<code class="sig-name descname">data</code><a class="headerlink" href="#hydroapi.models.Hydrometer.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#hydroapi.models.Hydrometer.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.interval">
+<code class="sig-name descname">interval</code><a class="headerlink" href="#hydroapi.models.Hydrometer.interval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.mac_addr">
+<code class="sig-name descname">mac_addr</code><a class="headerlink" href="#hydroapi.models.Hydrometer.mac_addr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Hydrometer.profile">
+<code class="sig-name descname">profile</code><a class="headerlink" href="#hydroapi.models.Hydrometer.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroapi.models.Hydrometer.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.models.Hydrometer.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hydroapi.models.Profile">
+<em class="property">class </em><code class="sig-prename descclassname">hydroapi.models.</code><code class="sig-name descname">Profile</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.models.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<dl class="attribute">
+<dt id="hydroapi.models.Profile.description">
+<code class="sig-name descname">description</code><a class="headerlink" href="#hydroapi.models.Profile.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Profile.duration">
+<code class="sig-name descname">duration</code><a class="headerlink" href="#hydroapi.models.Profile.duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Profile.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#hydroapi.models.Profile.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Profile.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#hydroapi.models.Profile.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Profile.req_gravity">
+<code class="sig-name descname">req_gravity</code><a class="headerlink" href="#hydroapi.models.Profile.req_gravity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hydroapi.models.Profile.req_temp">
+<code class="sig-name descname">req_temp</code><a class="headerlink" href="#hydroapi.models.Profile.req_temp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hydroapi.models.Profile.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hydroapi.models.Profile.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hydroapi">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hydroapi" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Dyp Web</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dyp Hydrometer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/hydroapi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
